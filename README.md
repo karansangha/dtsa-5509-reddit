@@ -26,5 +26,5 @@
 - The workflow doesn't proceed to the next step, i.e. deployment to `Heroku`.
 
 ### Continuous Deployment
-- If all the tests pass, the build is deployed to `Heroku` at [https://dtsa-5509-twitter.herokuapp.com](https://dtsa-5509-twitter.herokuapp.com)
+- If all the tests pass, the build is deployed to `Heroku` at [https://dtsa-5509-reddit.herokuapp.com](https://dtsa-5509-reddit.herokuapp.com)
 - This part of the workflow isn't run if any of the tests fail.
