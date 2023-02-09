@@ -1,4 +1,4 @@
-# Twitter Analyzer
+# Reddit Analyzer
 
 - Currently the repo only hosts a rudimentary `flask` app with a few unit & integration tests.
 - Over the next few weeks I will be adding a fully developed frontend with a data collector and a data analyzer.
