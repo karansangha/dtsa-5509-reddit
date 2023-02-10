@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
-from data_collector import collector
-from data_analyzer import analyzer
+from .data_collector import collector
+from .data_analyzer import analyzer
 
 app = Flask(__name__)
 
