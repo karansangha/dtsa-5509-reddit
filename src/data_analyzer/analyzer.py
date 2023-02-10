@@ -5,11 +5,15 @@ def check_subreddit_data_exists(subreddit_name):
     conn = sqlite3.connect("reddit.db")
     cursor = conn.cursor()
 
-    cursor.execute("SELECT count(*) FROM posts WHERE subreddit = ?", (subreddit_name,))
-    count = cursor.fetchone()[0]
-    conn.close()
+    try:
+        cursor.execute("SELECT count(*) FROM posts WHERE subreddit = ?", (subreddit_name,))
+        count = cursor.fetchone()[0]
+        conn.close()
 
-    return count > 0
+        return True
+    except sqlite3.OperationalError:
+        conn.close()
+        return False
 
 def generate_visualizations(subreddit_name):
     conn = sqlite3.connect('reddit.db')
