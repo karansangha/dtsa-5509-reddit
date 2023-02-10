@@ -28,5 +28,10 @@ def subreddit_graphs(subreddit_name):
 def subreddit_graphs_form():
     return redirect(url_for("subreddit_graphs", subreddit_name=request.form.get("subreddit_name", "")))
 
+@app.route("/echo_user_input", methods=["POST"])
+def echo_input():
+    input_text = request.form.get("user_input", "")
+    return "<h1>Thank you for using the form!</h1><p>You entered: " + input_text + "</p>"
+
 if __name__ == '__main__':
     app.run(debug=True)

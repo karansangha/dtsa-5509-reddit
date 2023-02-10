@@ -9,8 +9,8 @@ def test_index_headers(app, client):
 
 def test_index_content(app, client):
     res = client.get('/')
-    assert b'<h1>Twitter Analyzer</h1>' in res.data
-    assert b'<form action="/echo_user_input" method="POST">' in res.data
-    assert b'<label for="user_input">Enter any text - </label>' in res.data
-    assert b'<input name="user_input">' in res.data
+    assert b'<h1>Reddit Analyzer</h1>' in res.data
+    assert b'<form action="/r/" method="POST">' in res.data
+    assert b'<label for="subreddit_name">Enter any VALID subreddit name - </label>' in res.data
+    assert b'<input name="subreddit_name" value="python">' in res.data
     assert b'<input type="submit" value="Submit!">' in res.data
