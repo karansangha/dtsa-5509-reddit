@@ -21,8 +21,8 @@ def subreddit_graphs(subreddit_name):
     if not analyzer.check_subreddit_data_exists(subreddit_name):
         collector.get_top_posts(subreddit_name)
 
-    labels, post_data, comment_data, avg_score_data = analyzer.generate_visualizations(subreddit_name)
-    return render_template('subreddit.html', labels=labels, post_data=post_data, comment_data=comment_data, avg_score_data=avg_score_data)
+    data = analyzer.generate_visualizations_data(subreddit_name)
+    return render_template('subreddit.html', subreddit_name=subreddit_name, data=data)
 
 @app.route("/r/", methods=["POST"])
 def subreddit_graphs_form():

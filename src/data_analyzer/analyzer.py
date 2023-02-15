@@ -1,5 +1,5 @@
 import sqlite3
-import datetime as dt
+from datetime import datetime
 import os
 
 
@@ -17,39 +17,53 @@ def check_subreddit_data_exists(subreddit_name):
     return count > 0
     conn.close()
 
-def generate_visualizations(subreddit_name):
+def generate_visualizations_data(subreddit_name):
+    # Connect to the database
     conn = sqlite3.connect('reddit.db')
+
+    # Query the posts table for data
     c = conn.cursor()
+    c.execute('''SELECT created, num_comments, score FROM posts WHERE subreddit = ?''', (subreddit_name,))
+    posts = c.fetchall()
 
-    c.execute("SELECT created FROM posts WHERE subreddit=?", (subreddit_name,))
-    timestamps = c.fetchall()
+    # Create a dictionary to store the data for the three visualizations
+    data = {
+        "posts_per_day": {},
+        "comments_per_day": {},
+        "average_upvotes_per_day": {}
+    }
 
-    dates = [dt.datetime.fromtimestamp(ts[0]) for ts in timestamps]
+    # Loop through the posts and aggregate the data
+    for post in posts:
+        date = datetime.fromtimestamp(post[0]).date()
 
-    post_counts = {}
-    for date in dates:
-        if date.date() not in post_counts:
-            post_counts[date.date()] = 1
+        # Convert the date to a string in the format YYYY-MM-DD
+        date_str = date.strftime("%Y-%m-%d")
+
+        # Aggregate posts per day
+        if date_str in data["posts_per_day"]:
+            data["posts_per_day"][date_str] += 1
         else:
-            post_counts[date.date()] += 1
+            data["posts_per_day"][date_str] = 1
 
-    c.execute("SELECT num_comments, score FROM posts WHERE subreddit=?", (subreddit_name,))
-    comments_scores = c.fetchall()
+        # Aggregate comments per day
+        if date_str in data["comments_per_day"]:
+            data["comments_per_day"][date_str] += post[1]
+        else:
+            data["comments_per_day"][date_str] = post[1]
 
-    comment_counts = {}
-    score_counts = {}
-    for i, date in enumerate(dates):
-        if date.date() not in comment_counts:
-            comment_counts[date.date()] = 0
-            score_counts[date.date()] = 0
-        comment_counts[date.date()] += comments_scores[i][0]
-        score_counts[date.date()] += comments_scores[i][1]
+        # Aggregate upvotes per day
+        if date_str in data["average_upvotes_per_day"]:
+            data["average_upvotes_per_day"][date_str]["sum"] += post[2]
+            data["average_upvotes_per_day"][date_str]["count"] += 1
+        else:
+            data["average_upvotes_per_day"][date_str] = {"sum": post[2], "count": 1}
 
-    avg_scores = {date: score_counts[date]/post_counts[date] for date in score_counts}
+    # Calculate the average upvotes per day
+    for date_str in data["average_upvotes_per_day"]:
+        data["average_upvotes_per_day"][date_str] = data["average_upvotes_per_day"][date_str]["sum"] / data["average_upvotes_per_day"][date_str]["count"]
 
-    labels = list(post_counts.keys())
-    post_data = list(post_counts.values())
-    comment_data = list(comment_counts.values())
-    avg_score_data = list(avg_scores.values())
+    # Close the database connection
+    conn.close()
 
-    return labels, post_data, comment_data, avg_score_data
+    return data

@@ -1,85 +1,100 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Reddit Posts Visualization</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-</head>
-<body>
-  <canvas id="postChart" width="400" height="200"></canvas>
-  <canvas id="commentChart" width="400" height="200"></canvas>
-  <canvas id="scoreChart" width="400" height="200"></canvas>
-  <script>
-    var ctx = document.getElementById("postChart").getContext("2d");
-    var postChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: {{ labels|tojson|safe }},
-        datasets: [{
-          label: 'Number of Posts',
-          data: {{ post_data|tojson|safe }},
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-    
-    var ctx = document.getElementById("commentChart").getContext("2d");
-    var commentChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: {{ labels|tojson|safe }},
-        datasets: [{
-          label: 'Number of Comments',
-          data: {{ comment_data|tojson|safe }},
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-    
-    var ctx = document.getElementById("scoreChart").getContext("2d");
-    var scoreChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: {{ labels|tojson|safe }},
-        datasets: [{
-          label: 'Average Number of Upvotes',
-          data: {{ avg_score_data|tojson|safe }},
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-  </script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{ subreddit_name }} Analytics</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+
+    <h1>Analytics for subreddit - r/{{ subreddit_name }}</h1>
+
+    <!-- <h2>Number of Posts per Day</h2> -->
+    <div id="posts-per-day-chart"></div>
+
+    <!-- <h2>Number of Comments per Day</h2> -->
+    <div id="comments-per-day-chart"></div>
+
+    <!-- <h2>Average Number of Upvotes per Day</h2> -->
+    <div id="upvotes-per-day-chart"></div>
+
+    <script>
+        var postsPerDay = {{ data.posts_per_day | tojson }};
+        var commentsPerDay = {{ data.comments_per_day | tojson }};
+        var upvotesPerDay = {{ data.average_upvotes_per_day | tojson }};
+
+        console.log(postsPerDay);
+        console.log(commentsPerDay);
+        console.log(upvotesPerDay);
+
+        Highcharts.chart('posts-per-day-chart', {
+            title: {
+                text: 'Number of Posts per Day'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Posts'
+                }
+            },
+            series: [{
+                name: 'Posts',
+                // data: postsPerDay.map(row => [Date.parse(row.day), row.num_posts])
+                data: Object.entries(postsPerDay).map(([day, numPosts]) => [Date.parse(day), numPosts])
+            }]
+        });
+
+        Highcharts.chart('comments-per-day-chart', {
+            title: {
+                text: 'Number of Comments per Day'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Comments'
+                }
+            },
+            series: [{
+                name: 'Comments',
+                // data: commentsPerDay.map(row => [Date.parse(row.day), row.num_comments])
+                data: Object.entries(commentsPerDay).map(([day, num_comments]) => [Date.parse(day), num_comments])
+            }]
+        });
+
+        Highcharts.chart('upvotes-per-day-chart', {
+            title: {
+                text: 'Average Number of Upvotes per Day'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: {
+                    day: '%e of %b'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Average Number of Upvotes'
+                }
+            },
+            series: [{
+                name: 'Upvotes',
+                // data: upvotesPerDay.map(row => [Date.parse(row.day), row.avg_upvotes])
+                data: Object.entries(upvotesPerDay).map(([day, avg_upvotes]) => [Date.parse(day), avg_upvotes])
+            }]
+        });
+
+    </script>
+  </body>
 </html>
