@@ -1,19 +1,21 @@
 import sqlite3
 import datetime as dt
+import os
+
 
 def check_subreddit_data_exists(subreddit_name):
+    if not os.path.isfile("reddit.db"):
+        return False
+
     conn = sqlite3.connect("reddit.db")
     cursor = conn.cursor()
 
-    try:
-        cursor.execute("SELECT count(*) FROM posts WHERE subreddit = ?", (subreddit_name,))
-        count = cursor.fetchone()[0]
-        conn.close()
+    cursor.execute("SELECT count(*) FROM posts WHERE subreddit = ?", (subreddit_name,))
+    count = cursor.fetchone()[0]
+    conn.close()
 
-        return True
-    except sqlite3.OperationalError:
-        conn.close()
-        return False
+    return count > 0
+    conn.close()
 
 def generate_visualizations(subreddit_name):
     conn = sqlite3.connect('reddit.db')
