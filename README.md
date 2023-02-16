@@ -3,6 +3,15 @@
 - Currently the repo only hosts a rudimentary `flask` app with a few unit & integration tests.
 - Over the next few weeks I will be adding a fully developed frontend with a data collector and a data analyzer.
 
+## Run Individual Modules
+### Data Collector
+- `./run_collector.sh`
+- If the above doesn't run, please try `chmod +x run_collector.sh` and try `./run_collector.sh` again.
+
+### Data Analyzer
+- `./run_analyzer.sh`
+- If the above doesn't run, please try `chmod +x run_analyzer.sh` and try `./run_analyzer.sh` again.
+
 ## Development Environment
 - Open a new terminal window in the root directory of this project
 - `python3 -m venv .venv`
@@ -10,8 +19,7 @@
 - `pip install -r requirements.txt`
 
 ### Run the app locally
-- `export FLASK_APP=src/app.py`
-- `export FLASK_ENV=development`
+- `source .env`
 - `flask run`
 
 ### Run the tests locally
