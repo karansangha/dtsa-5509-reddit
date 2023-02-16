@@ -32,7 +32,7 @@
     - If the above doesn't run, please try `chmod +x run_tests.sh` and try `./run_tests.sh` again.
 
 ## CI/CD
-- I've setup the CI/CD pipeline using Github Actions. The workflow can be found here: [.github/workflows/main.yml](https://github.com/karansangha/dtsa-5509-twitter-analyzer/blob/main/.github/workflows/main.yml)
+- I've setup the CI/CD pipeline using Github Actions. The workflow can be found here: [.github/workflows/main.yml](https://github.com/karansangha/dtsa-5509-reddit/blob/main/.github/workflows/main.yml)
 
 ### Continuous Integration
 - The unit & integration tests are run on every push to the `main` branch.
