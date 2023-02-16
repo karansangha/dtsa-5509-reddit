@@ -2,7 +2,6 @@ import sqlite3
 from datetime import datetime
 import os
 
-
 def check_subreddit_data_exists(subreddit_name):
     if not os.path.isfile("reddit.db"):
         return False
@@ -67,3 +66,14 @@ def generate_visualizations_data(subreddit_name):
     conn.close()
 
     return data
+
+if __name__ == "__main__":
+    import sys
+    import pprint
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '')))
+    from data_collector import collector
+
+    if not check_subreddit_data_exists("python"):
+        collector.get_top_posts("python")
+    print("Analyzed data for Python subreddit:\n")
+    pprint.pprint(generate_visualizations_data("python"))

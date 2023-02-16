@@ -109,3 +109,22 @@ def retrieve_comments():
 
 if __name__ == '__main__':
     get_top_posts('python')
+
+    # Connect to the database
+    conn = sqlite3.connect('reddit.db')
+
+    # Query the posts table for data
+    c = conn.cursor()
+    c.execute('''SELECT title, score, subreddit, url FROM posts WHERE subreddit = ?''', ("python",))
+    posts = c.fetchall()
+    print("Top 5 Posts from Python subreddit:\n")
+
+    for post in posts[:5]:
+        # print(post[0], post[1], post[2], post[3], sep=' | ')
+        print(f"Title: {post[0]}")
+        print(f"Score: {post[1]}")
+        print(f"Subreddit: {post[2]}")
+        print(f"URL: {post[3]}")
+        print()
+
+    conn.close()
