@@ -17,10 +17,14 @@
 - `python3 -m venv .venv`
 - `source .venv/bin/activate`
 - `pip install -r requirements.txt`
+- Please ensure you have `Docker Desktop` installed and running on your machine.
 
 ### Run the app locally
 - `source .env`
+- `docker-compose up -d`
 - `flask run`
+- Or run `./run_app.sh`
+    - If the above doesn't run, please try `chmod +x run_app.sh` and try `./run_app.sh` again.
 
 ### Run the tests locally
 - Activate the virtual env and run `python -m pytest`
