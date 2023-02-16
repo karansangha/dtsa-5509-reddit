@@ -4,3 +4,4 @@
 .env
 .env_bkup
 *.db
+.DS_Store
