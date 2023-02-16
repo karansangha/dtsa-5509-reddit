@@ -23,7 +23,9 @@
 - `flask run`
 
 ### Run the tests locally
-- `python -m pytest`
+- Activate the virtual env and run `python -m pytest`
+- Or run `./run_tests.sh`
+    - If the above doesn't run, please try `chmod +x run_tests.sh` and try `./run_tests.sh` again.
 
 ## CI/CD
 - I've setup the CI/CD pipeline using Github Actions. The workflow can be found here: [.github/workflows/main.yml](https://github.com/karansangha/dtsa-5509-twitter-analyzer/blob/main/.github/workflows/main.yml)
