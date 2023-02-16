@@ -14,3 +14,8 @@ def test_index_content(app, client):
     assert b'<label for="subreddit_name">Enter any VALID subreddit name - </label>' in res.data
     assert b'<input name="subreddit_name" value="python">' in res.data
     assert b'<input type="submit" value="Submit!">' in res.data
+
+def test_health_check(app, client):
+    res = client.get('/health')
+    assert res.status_code == 200
+    assert b"I'm healthy!" in res.data
