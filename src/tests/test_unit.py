@@ -19,3 +19,9 @@ def test_health_check(app, client):
     res = client.get('/health')
     assert res.status_code == 200
     assert b"I'm healthy!" in res.data
+
+def test_metrics(app, client):
+    res = client.get('/metrics')
+    assert res.status_code == 200
+    assert b'# TYPE app_info gauge' in res.data
+    assert b'app_info{version="1.0.0"} 1.0' in res.data
