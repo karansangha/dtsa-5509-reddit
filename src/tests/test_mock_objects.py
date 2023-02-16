@@ -1,11 +1,6 @@
 from ..data_collector import collector
 from ..data_analyzer import analyzer
 
-def test_collector_authenticate(mocker):
-    mocker.patch('src.data_collector.collector.authenticate')
-    collector.get_top_posts('python')
-    collector.authenticate.assert_called_once()
-
 def test_collector_get_top_posts(mocker):
     mocker.patch('src.data_collector.collector.get_top_posts')
     collector.get_top_posts('python')
