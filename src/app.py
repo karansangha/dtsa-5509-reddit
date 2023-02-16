@@ -28,6 +28,7 @@ def main():
      '''
 
 @app.route("/r/<subreddit_name>")
+@common_counter
 @metrics.counter(
     'cnt_subreddit', 'Number of invocations per subreddit', labels={
         'subreddit': lambda: request.view_args['subreddit_name'],
@@ -41,15 +42,18 @@ def subreddit_graphs(subreddit_name):
     return render_template('subreddit.html', subreddit_name=subreddit_name, data=data)
 
 @app.route("/r/", methods=["POST"])
+@common_counter
 def subreddit_graphs_form():
     return redirect(url_for("subreddit_graphs", subreddit_name=request.form.get("subreddit_name", "")))
 
 @app.route("/echo_user_input", methods=["POST"])
+@common_counter
 def echo_input():
     input_text = request.form.get("user_input", "")
     return "<h1>Thank you for using the form!</h1><p>You entered: " + input_text + "</p>"
 
 @app.route("/health")
+@common_counter
 def health_check():
     return "I'm healthy!"
 
