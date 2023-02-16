@@ -1,11 +1,7 @@
-import logging
 from flask import Flask, request, render_template, redirect, url_for
 from .data_collector import collector
 from .data_analyzer import analyzer
 from prometheus_flask_exporter import PrometheusMetrics
-
-logging.basicConfig(level=logging.INFO)
-logging.info("Setting LOGLEVEL to INFO")
 
 app = Flask(__name__)
 metrics = PrometheusMetrics(app, group_by='endpoint')

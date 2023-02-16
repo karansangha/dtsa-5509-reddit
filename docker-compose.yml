@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.5-management
+    container_name: reddit-analyzer-rabbit
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    volumes:
+      - ./.docker-data/.rabbit-data:/var/lib/rabbitmq/
+      - ./.docker-data/.rabbit-log:/var/log/rabbitmq

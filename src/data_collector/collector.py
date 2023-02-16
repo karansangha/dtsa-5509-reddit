@@ -1,6 +1,7 @@
 import praw
 import os
 import sqlite3
+import pika
 
 def authenticate():
     reddit = praw.Reddit(
@@ -17,6 +18,14 @@ def get_conn():
     return conn
 
 def get_top_posts(subreddit_name):
+    # Use pika library to send the name of subreddit to the queue
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+    channel.queue_declare(queue='reddit')
+    channel.basic_publish(exchange='', routing_key='reddit', body=subreddit_name)
+    connection.close()
+
+
     # Connect to the database
     conn = get_conn()
     
